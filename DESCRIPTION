@@ -16,3 +16,5 @@ Imports:
     stats
 Suggests: 
     recipes
+URL: https://github.com/pgg1309/fused.ridge
+BugReports: https://github.com/pgg1309/fused.ridge/issues
