@@ -6,10 +6,18 @@
 \alias{fused.ridge-package}
 \title{fused.ridge: What the Package Does (One Line, Title Case)}
 \description{
-What the package does (one paragraph).
+Estimate ridge regression with fused penalty.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/pgg1309/fused.ridge}
+  \item Report bugs at \url{https://github.com/pgg1309/fused.ridge/issues}
+}
+
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Paulo Gustavo Grahl \email{pgrahl@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
 
 }
 \keyword{internal}
