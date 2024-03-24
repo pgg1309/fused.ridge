@@ -124,12 +124,14 @@ fused_ridge_bridge <- function(processed, lambda, ...) {
 # Implementation
 
 fused_ridge_impl <- function(predictors, outcome, lambda) {
+
+  # --- Define the Shrinkage-Weights
   shrinkw = apply(predictors,2,stats::sd)
 
-  # --- Initialize the Coefficients
+  # --- Initialize CVXR::the Coefficients
   coeffs <- CVXR::Variable(ncol(predictors))
   # --- Define the Loss-Function
-  loss <- CVXR::Minimize(sum((outcome - predictors %*% coeffs)^2) + lambda*sum(diff(shrinkw*coeffs)^2))
+  loss <- CVXR::Minimize(sum((outcome - predictors %*% coeffs)^2) + lambda*sum(CVXR::diff(shrinkw*coeffs)^2))
   # --- Set the constraints
   constr <- list(coeffs >= 0, t(coeffs) %*% apply(predictors,2,mean) == mean(outcome))
   # --- Set the Problem
@@ -141,3 +143,4 @@ fused_ridge_impl <- function(predictors, outcome, lambda) {
 
   list(coefs = beta, lambda = lambda)
 }
+
