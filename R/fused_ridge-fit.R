@@ -48,13 +48,13 @@
 #' # mod3 <- fused_ridge(rec, mtcars, lambda)
 #'
 #' @export
-fused_ridge <- function(x, ...) {
+fused_ridge <- function(x, lambda, ...) {
   UseMethod("fused_ridge")
 }
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.default <- function(x, ...) {
+fused_ridge.default <- function(x, lambda, ...) {
   stop("`fused_ridge()` is not defined for a '", class(x)[1], "'.", call. = FALSE)
 }
 
