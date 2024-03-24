@@ -63,6 +63,6 @@ get_fused_ridge_predict_function <- function(type) {
 # Implementation
 
 predict_fused_ridge_numeric <- function(model, predictors) {
-  predictions <-  as.vector(predictors %*% model$coefs)
+  predictions <-  as.vector(predictors %*% model$coef_values)
   hardhat::spruce_numeric(predictions)
 }

@@ -9,9 +9,9 @@
 \alias{fused_ridge.recipe}
 \title{Fit a \code{fused_ridge}}
 \usage{
-fused_ridge(x, ...)
+fused_ridge(x, lambda, ...)
 
-\method{fused_ridge}{default}(x, ...)
+\method{fused_ridge}{default}(x, lambda, ...)
 
 \method{fused_ridge}{data.frame}(x, y, lambda, ...)
 
@@ -30,6 +30,8 @@ fused_ridge(x, ...)
 created from \code{\link[recipes:recipe]{recipes::recipe()}}.
 }}
 
+\item{lambda}{A numeric value specifying the penalty parameter.}
+
 \item{...}{Not currently used, but required for extensibility.}
 
 \item{y}{When \code{x} is a \strong{data frame} or \strong{matrix}, \code{y} is the outcome
@@ -39,8 +41,6 @@ specified as:
 \item A \strong{matrix} with 1 numeric column.
 \item A numeric \strong{vector}.
 }}
-
-\item{lambda}{A numeric value specifying the penalty parameter.}
 
 \item{formula}{A formula specifying the outcome terms on the left-hand side,
 and the predictor terms on the right-hand side.}

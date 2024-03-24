@@ -106,15 +106,16 @@ fused_ridge_bridge <- function(processed, lambda, ...) {
   hardhat::validate_outcomes_are_numeric(outcome)
   hardhat::validate_predictors_are_numeric(predictors)
 
+  coef_names <- colnames(predictors)
   predictors <- as.matrix(predictors)
   outcome <- as.matrix(outcome)
-
 
   fit <- fused_ridge_impl(predictors, outcome, lambda)
 
   new_fused_ridge(
-    coefs = fit$coefs,
+    coef_values =  fit$coefs,
     lambda = fit$lambda,
+    coef_names = coef_names,
     blueprint = processed$blueprint
   )
 }
