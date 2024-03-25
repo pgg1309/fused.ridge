@@ -145,6 +145,7 @@ fused_ridge_impl <- function(predictors, outcome, lambda) {
   list(coefs = beta, lambda = lambda)
 }
 
+
 # Make parsnip model
 make_fused_model <- function() {
   # Step 1. Register the model, modes, and arguments ------------------------
@@ -168,27 +169,7 @@ make_fused_model <- function() {
 
 
   # Step 2. Create the model function ---------------------------------------
-  fused_model <-
-    function(mode = "regression",  penalty = NULL) {
-      # Check for correct mode
-      if (mode  != "regression") {
-        rlang::abort("`mode` should be 'regression'")
-      }
-
-      # Capture the arguments in quosures
-      args <- list(penalty = rlang::enquo(penalty))
-
-      # Save some empty slots for future parts of the specification
-      parsnip::new_model_spec(
-        "fused_model",
-        args = args,
-        eng_args = NULL,
-        mode = mode,
-        method = NULL,
-        engine = NULL
-      )
-    }
-
+  # Moved outside of the function
 
   # Step 3. Add a fit module ------------------------------------------------
   parsnip::set_fit(
