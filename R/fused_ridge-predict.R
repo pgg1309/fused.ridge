@@ -27,8 +27,21 @@
 #' # Predict, with preprocessing
 #' #predict(mod, test)
 #'
-#'
 #' @export
+predict <- function(object, ...) {
+UseMethod("predict")
+}
+
+#' @export
+#' @rdname predict
+predict.default <- function(object, ...) {
+  stop("`predict()` is not defined for a '", class(object)[1], "'.", call. = FALSE)
+}
+
+# Method for `fused_ridge` objects
+
+#' @export
+#' @rdname predict
 predict.fused_ridge <- function(object, new_data, type = "numeric", ...) {
   forged <- hardhat::forge(new_data, object$blueprint)
   rlang::arg_match(type, valid_fused_ridge_predict_types())
