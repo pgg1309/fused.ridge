@@ -29,17 +29,6 @@
 #'
 #'
 #' @export
-predict <- function(object, new_data, ...) {
-  UseMethod("predict")
-}
-
-#' @export
-#' @rdname predict
-predict.default <- function(object, new_data, ...) {
-  stop("`predict()` is not defined for a '", class(object)[1], "'.", call. = FALSE)
-}
-#'
-#' @export
 #' @rdname predict
 predict.fused_ridge <- function(object, new_data, type = "numeric", ...) {
   forged <- hardhat::forge(new_data, object$blueprint)
