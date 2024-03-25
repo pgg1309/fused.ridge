@@ -15,5 +15,5 @@ fused_model(mode = "regression", penalty = NULL)
 A \code{fused_model} object.
 }
 \description{
-\code{fused_model()} creates a parsnip model.
+Create a \code{fused_model}
 }

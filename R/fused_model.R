@@ -1,7 +1,5 @@
 #' Create a `fused_model`
 #'
-#' `fused_model()` creates a parsnip model.
-#'
 #' @param mode Needs to be regression
 #'
 #' @param penalty sets the penalty parameter (lambda)
@@ -12,8 +10,7 @@
 #'
 #' @export
 #' @rdname fused_model
-fused_model <-
-  function(mode = "regression",  penalty = NULL) {
+fused_model <- function(mode = "regression",  penalty = NULL) {
     # Check for correct mode
     if (mode  != "regression") {
       rlang::abort("`mode` should be 'regression'")
