@@ -29,7 +29,7 @@
 #'
 #'
 #' @export
-#' @rdname predict
+#' @rdname predict.fused_ridge
 predict.fused_ridge <- function(object, new_data, type = "numeric", ...) {
   forged <- hardhat::forge(new_data, object$blueprint)
   rlang::arg_match(type, valid_fused_ridge_predict_types())
