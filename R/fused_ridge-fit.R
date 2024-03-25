@@ -48,7 +48,7 @@
 #' # mod3 <- fused_ridge(rec, mtcars, lambda)
 #'
 #' @export
-fused_ridge <- function(x, lambda, ...) {
+fused_ridge <- function(x, ...) {
   UseMethod("fused_ridge")
 }
 

@@ -9,7 +9,7 @@
 \alias{fused_ridge.recipe}
 \title{Fit a \code{fused_ridge}}
 \usage{
-fused_ridge(x, lambda, ...)
+fused_ridge(x, ...)
 
 \method{fused_ridge}{default}(x, lambda, ...)
 
@@ -30,9 +30,9 @@ fused_ridge(x, lambda, ...)
 created from \code{\link[recipes:recipe]{recipes::recipe()}}.
 }}
 
-\item{lambda}{A numeric value specifying the penalty parameter.}
-
 \item{...}{Not currently used, but required for extensibility.}
+
+\item{lambda}{A numeric value specifying the penalty parameter.}
 
 \item{y}{When \code{x} is a \strong{data frame} or \strong{matrix}, \code{y} is the outcome
 specified as:
