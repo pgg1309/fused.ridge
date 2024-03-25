@@ -179,7 +179,7 @@ make_fused_model <- function() {
     value = list(
       interface = "formula",
       protect = c("formula", "data"),
-      func = c(fun = "fused_ridge"),
+      func = c(pkg = "fused.ridge", fun = "fused_ridge"),
       defaults = list()
     )
   )
@@ -206,7 +206,7 @@ make_fused_model <- function() {
     value = list(
       pre = NULL,
       post = NULL,
-      func = c(fun = "predict"),
+      func = c(pkg = "fused.ridge", fun = "predict"),
       args =
         list(
           object = quote(object$fit),
