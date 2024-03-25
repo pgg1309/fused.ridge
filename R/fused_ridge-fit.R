@@ -145,3 +145,99 @@ fused_ridge_impl <- function(predictors, outcome, lambda) {
   list(coefs = beta, lambda = lambda)
 }
 
+# Make parsnip model
+make_fused_model <- function() {
+  # Step 1. Register the model, modes, and arguments ------------------------
+  parsnip::set_new_model("fused_model")
+  parsnip::set_model_mode(model = "fused_model", mode = "regression")
+  parsnip::set_model_engine(
+    "fused_model",
+    mode = "regression",
+    eng = "fused_ridge"
+  )
+  parsnip::set_dependency("fused_model", eng = "fused_ridge", pkg = "fused.ridge", mode = "regression")
+
+  parsnip::set_model_arg(
+    model = "fused_model",
+    eng = "fused_ridge",
+    parsnip = "penalty",
+    original = "lambda",
+    func = list(pkg = "dials", fun = "penalty"),
+    has_submodel = FALSE
+  )
+
+
+  # Step 2. Create the model function ---------------------------------------
+  fused_model <-
+    function(mode = "regression",  penalty = NULL) {
+      # Check for correct mode
+      if (mode  != "regression") {
+        rlang::abort("`mode` should be 'regression'")
+      }
+
+      # Capture the arguments in quosures
+      args <- list(penalty = rlang::enquo(penalty))
+
+      # Save some empty slots for future parts of the specification
+      parsnip::new_model_spec(
+        "fused_model",
+        args = args,
+        eng_args = NULL,
+        mode = mode,
+        method = NULL,
+        engine = NULL
+      )
+    }
+
+
+  # Step 3. Add a fit module ------------------------------------------------
+  parsnip::set_fit(
+    model = "fused_model",
+    eng = "fused_ridge",
+    mode = "regression",
+    value = list(
+      interface = "formula",
+      protect = c("formula", "data"),
+      func = c(fun = "fused_ridge"),
+      defaults = list()
+    )
+  )
+
+  parsnip::set_encoding(
+    model = "fused_model",
+    eng = "fused_ridge",
+    mode = "regression",
+    options = list(
+      predictor_indicators = "none",
+      compute_intercept = FALSE,
+      remove_intercept = FALSE,
+      allow_sparse_x = FALSE
+    )
+  )
+
+
+  # Step 4. Add modules for prediction --------------------------------------
+  parsnip::set_pred(
+    model = "fused_model",
+    eng = "fused_ridge",
+    mode = "regression",
+    type = "numeric",
+    value = list(
+      pre = NULL,
+      post = NULL,
+      func = c(fun = "predict"),
+      args =
+        list(
+          object = quote(object$fit),
+          new_data = quote(new_data),
+          type = "numeric"
+        )
+    )
+  )
+}
+
+
+.onLoad <- function(libname, pkgname) {
+  make_fused_model()
+}
+
