@@ -28,11 +28,11 @@
 #' #predict(mod, test)
 #'
 #' @export
-predict <- function(object, ...) {
-UseMethod("predict")
-}
-
-#' @export
+#' @importFrom stats predict
+#' @rdname predict
+stats::predict
+#'
+#'@export
 #' @rdname predict
 predict.default <- function(object, ...) {
   stop("`predict()` is not defined for a '", class(object)[1], "'.", call. = FALSE)

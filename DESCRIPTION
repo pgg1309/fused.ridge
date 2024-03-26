@@ -12,10 +12,11 @@ RoxygenNote: 7.3.1
 Imports: 
     CVXR,
     hardhat,
-    parsnip,
     rlang,
     stats
 Suggests: 
     recipes
+Depends:
+    parsnip
 URL: https://github.com/pgg1309/fused.ridge
 BugReports: https://github.com/pgg1309/fused.ridge/issues
