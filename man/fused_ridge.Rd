@@ -11,15 +11,15 @@
 \usage{
 fused_ridge(x, ...)
 
-\method{fused_ridge}{default}(x, lambda, ...)
+\method{fused_ridge}{default}(x, lambda, positive, ...)
 
-\method{fused_ridge}{data.frame}(x, y, lambda, ...)
+\method{fused_ridge}{data.frame}(x, y, lambda, positive, ...)
 
-\method{fused_ridge}{matrix}(x, y, lambda, ...)
+\method{fused_ridge}{matrix}(x, y, lambda, positive, ...)
 
-\method{fused_ridge}{formula}(formula, data, lambda, ...)
+\method{fused_ridge}{formula}(formula, data, lambda, positive, ...)
 
-\method{fused_ridge}{recipe}(x, data, lambda, ...)
+\method{fused_ridge}{recipe}(x, data, lambda, positive, ...)
 }
 \arguments{
 \item{x}{Depending on the context:

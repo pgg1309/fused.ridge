@@ -4,7 +4,7 @@
 \alias{fused_model}
 \title{Create a \code{fused_model}}
 \usage{
-fused_model(mode = "regression", penalty = NULL)
+fused_model(mode = "regression", penalty = NULL, positive = TRUE)
 }
 \arguments{
 \item{mode}{Needs to be regression}

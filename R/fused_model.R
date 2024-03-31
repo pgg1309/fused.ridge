@@ -10,14 +10,15 @@
 #'
 #' @export
 #' @rdname fused_model
-fused_model <- function(mode = "regression",  penalty = NULL) {
+fused_model <- function(mode = "regression",  penalty = NULL, positive = TRUE) {
     # Check for correct mode
     if (mode  != "regression") {
       rlang::abort("`mode` should be 'regression'")
     }
 
     # Capture the arguments in quosures
-    args <- list(penalty = rlang::enquo(penalty))
+    args <- list(penalty = rlang::enquo(penalty),
+                 positive = rlang::enquo(positive))
 
     # Save some empty slots for future parts of the specification
     parsnip::new_model_spec(

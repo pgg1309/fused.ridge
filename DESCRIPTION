@@ -13,10 +13,9 @@ Imports:
     CVXR,
     hardhat,
     rlang,
-    stats
+    stats,
+    parsnip
 Suggests: 
     recipes
-Depends:
-    parsnip
 URL: https://github.com/pgg1309/fused.ridge
 BugReports: https://github.com/pgg1309/fused.ridge/issues

@@ -54,7 +54,7 @@ fused_ridge <- function(x, ...) {
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.default <- function(x, lambda, ...) {
+fused_ridge.default <- function(x, lambda, positive, ...) {
   stop("`fused_ridge()` is not defined for a '", class(x)[1], "'.", call. = FALSE)
 }
 
@@ -62,42 +62,42 @@ fused_ridge.default <- function(x, lambda, ...) {
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.data.frame <- function(x, y, lambda, ...) {
+fused_ridge.data.frame <- function(x, y, lambda, positive, ...) {
   processed <- hardhat::mold(x, y)
-  fused_ridge_bridge(processed, lambda, ...)
+  fused_ridge_bridge(processed, lambda, positive,...)
 }
 
 # XY method - matrix
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.matrix <- function(x, y, lambda, ...) {
+fused_ridge.matrix <- function(x, y, lambda, positive, ...) {
   processed <- hardhat::mold(x, y)
-  fused_ridge_bridge(processed, lambda, ...)
+  fused_ridge_bridge(processed, lambda, positive, ...)
 }
 
 # Formula method
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.formula <- function(formula, data, lambda, ...) {
+fused_ridge.formula <- function(formula, data, lambda, positive, ...) {
   processed <- hardhat::mold(formula, data)
-  fused_ridge_bridge(processed, lambda, ...)
+  fused_ridge_bridge(processed, lambda, positive, ...)
 }
 
 # Recipe method
 
 #' @export
 #' @rdname fused_ridge
-fused_ridge.recipe <- function(x, data, lambda, ...) {
+fused_ridge.recipe <- function(x, data, lambda, positive, ...) {
   processed <- hardhat::mold(x, data)
-  fused_ridge_bridge(processed, lambda, ...)
+  fused_ridge_bridge(processed, lambda, positive, ...)
 }
 
 # ------------------------------------------------------------------------------
 # Bridge
 
-fused_ridge_bridge <- function(processed, lambda, ...) {
+fused_ridge_bridge <- function(processed, lambda, positive, ...) {
   predictors <- processed$predictors
   outcome <- processed$outcomes
 
@@ -110,11 +110,12 @@ fused_ridge_bridge <- function(processed, lambda, ...) {
   predictors <- as.matrix(predictors)
   outcome <- as.matrix(outcome)
 
-  fit <- fused_ridge_impl(predictors, outcome, lambda)
+  fit <- fused_ridge_impl(predictors, outcome, lambda, positive)
 
   new_fused_ridge(
     coef_values =  fit$coefs,
     lambda = fit$lambda,
+    positive = fit$positive,
     coef_names = coef_names,
     blueprint = processed$blueprint
   )
@@ -124,7 +125,7 @@ fused_ridge_bridge <- function(processed, lambda, ...) {
 # ------------------------------------------------------------------------------
 # Implementation
 
-fused_ridge_impl <- function(predictors, outcome, lambda) {
+fused_ridge_impl <- function(predictors, outcome, lambda, positive) {
 
   # --- Define the Shrinkage-Weights
   shrinkw = apply(predictors,2,stats::sd)
@@ -134,7 +135,12 @@ fused_ridge_impl <- function(predictors, outcome, lambda) {
   # --- Define the Loss-Function
   loss <- CVXR::Minimize(sum((outcome - predictors %*% coeffs)^2) + lambda*sum(CVXR::diff(shrinkw*coeffs)^2))
   # --- Set the constraints
+if (positive) {
   constr <- list(coeffs >= 0, t(coeffs) %*% apply(predictors,2,mean) == mean(outcome))
+  }
+else {
+  constr <- list(t(coeffs) %*% apply(predictors,2,mean) == mean(outcome))
+}
   # --- Set the Problem
   prob <- CVXR::Problem(loss,constr)
   # --- Solve the Problem
@@ -142,7 +148,7 @@ fused_ridge_impl <- function(predictors, outcome, lambda) {
   # --- Get the betas
   beta <- sol$getValue(coeffs)
 
-  list(coefs = beta, lambda = lambda)
+  list(coefs = beta, lambda = lambda, positive = positive)
 }
 
 
@@ -167,6 +173,14 @@ make_fused_model <- function() {
     has_submodel = FALSE
   )
 
+  parsnip::set_model_arg(
+    model = "fused_model",
+    eng = "fused_ridge",
+    parsnip = "positive",
+    original = "positive",
+    func = list(pkg = "dials", fun = "positive"),
+    has_submodel = FALSE
+  )
 
   # Step 2. Create the model function ---------------------------------------
   # Moved outside of the function
