@@ -147,8 +147,10 @@ else {
   sol <- CVXR::solve(prob)
   # --- Get the betas
   beta <- sol$getValue(coeffs)
+  # --- add smoothness
+  deriv2_smooth <- sum(stats::splinefun(1:nrow(beta), beta)(1:nrow(beta),2)^2)
 
-  list(coefs = beta, lambda = lambda, positive = positive)
+  list(coefs = beta, lambda = lambda, positive = positive, deriv2_smooth)
 }
 
 
