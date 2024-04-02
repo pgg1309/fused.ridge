@@ -116,6 +116,7 @@ fused_ridge_bridge <- function(processed, lambda, positive, ...) {
     coef_values =  fit$coefs,
     lambda = fit$lambda,
     positive = fit$positive,
+    deriv2_smooth = fit$deriv2_smooth,
     coef_names = coef_names,
     blueprint = processed$blueprint
   )
@@ -150,7 +151,7 @@ else {
   # --- add smoothness
   deriv2_smooth <- sum(stats::splinefun(1:nrow(beta), beta)(1:nrow(beta),2)^2)
 
-  list(coefs = beta, lambda = lambda, positive = positive, deriv2_smooth)
+  list(coefs = beta, lambda = lambda, positive = positive, deriv2_smooth = deriv2_smooth)
 }
 
 
